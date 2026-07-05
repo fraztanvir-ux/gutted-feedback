@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: "Invalid score" }, { status: 400 });
     }
 
-    await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: "gutted. Feedback <leads@gutd.au>",
       to: "info@gutd.au",
       subject: `New feedback: ${score}/5 (${LABELS[score]})`,
@@ -38,6 +38,12 @@ export async function POST(req: NextRequest) {
       `,
     });
 
+    if (error) {
+      console.error("[feedback] Resend returned an error:", error);
+      return NextResponse.json({ ok: false, error: error.message ?? String(error) }, { status: 502 });
+    }
+
+    console.log("[feedback] sent, Resend id:", data?.id);
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("[feedback] error:", err);
