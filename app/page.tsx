@@ -132,6 +132,7 @@ export default function FeedbackPage() {
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
                 rows={4}
+                maxLength={2000}
                 placeholder="Optional, but it really helps."
                 className="mt-3 w-full rounded-xl px-4 py-3.5 text-[15px] outline-none transition-colors"
                 style={{
